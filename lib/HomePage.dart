@@ -24,7 +24,7 @@ class _HomePageState extends State<HomePage> {
         child: f[_ci],
       ),
       bottomNavigationBar: BottomNavigationBar(
-        items: [
+        items: const [
           BottomNavigationBarItem(
             icon: Icon(
               Icons.change_circle_sharp,
@@ -50,20 +50,20 @@ class _HomePageState extends State<HomePage> {
             _ci = i;
           });
         },
-        backgroundColor: _ci == 1 ? Colors.black : Colors.grey,
+        backgroundColor: _ci == 1 ? Colors.greenAccent : Colors.grey,
         selectedItemColor: Colors.white,
-        selectedIconTheme: IconThemeData(
+        selectedIconTheme: const IconThemeData(
           size: 32
         ),
-        selectedLabelStyle: TextStyle(
+        selectedLabelStyle: const TextStyle(
           fontSize: 18,
           fontFamily: 'Degular',
         ),
         unselectedItemColor: Colors.black54,
-        unselectedIconTheme: IconThemeData(
+        unselectedIconTheme: const IconThemeData(
           size: 28
         ),
-        unselectedLabelStyle: TextStyle(
+        unselectedLabelStyle: const TextStyle(
           fontSize: 14,
           fontFamily: 'Degular',
         ),

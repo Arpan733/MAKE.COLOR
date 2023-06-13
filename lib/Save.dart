@@ -2,8 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:hive/hive.dart';
 
-import 'Generate.dart';
-
 class Save extends StatefulWidget {
   const Save({Key? key}) : super(key: key);
 
@@ -81,30 +79,28 @@ class _SaveState extends State<Save> with SingleTickerProviderStateMixin{
     print(colorpalletlist);
 
     return Container(
-      margin: EdgeInsets.only(top: 25),
+      margin: const EdgeInsets.only(top: 25),
       height: MediaQuery.of(context).size.height - 97,
       color: Colors.grey,
       child: Column(
         children: [
-          Container(
-            child: DefaultTabController(
-              length: 2,
-              child: TabBar(
-                controller: _tabController,
-                unselectedLabelStyle: TextStyle(
-                  fontSize: 14,
-                  fontFamily: 'Degular',
-                ),
-                labelStyle: TextStyle(
-                  fontSize: 18,
-                  fontFamily: 'Degular',
-                ),
-                indicatorColor: Colors.black54,
-                tabs: <Tab> [
-                  Tab(text: 'Single Color',),
-                  Tab(text: 'Color Pallete',),
-                ],
+          DefaultTabController(
+            length: 2,
+            child: TabBar(
+              controller: _tabController,
+              unselectedLabelStyle: const TextStyle(
+                fontSize: 14,
+                fontFamily: 'Degular',
               ),
+              labelStyle: const TextStyle(
+                fontSize: 18,
+                fontFamily: 'Degular',
+              ),
+              indicatorColor: Colors.black54,
+              tabs: const <Tab> [
+                Tab(text: 'Single Color',),
+                Tab(text: 'Color Pallete',),
+              ],
             ),
           ),
           Container(
@@ -113,11 +109,11 @@ class _SaveState extends State<Save> with SingleTickerProviderStateMixin{
             child: TabBarView(
               controller: _tabController,
               children: <Widget> [
-                _isLoading ? Center(
+                _isLoading ? const Center(
                   child: CircularProgressIndicator(
                     color: Colors.grey,
                   ),
-                ) : singlecolorlist.isEmpty ? Center(
+                ) : singlecolorlist.isEmpty ? const Center(
                   child: Text(
                     'You have not saved any color yet.',
                     style: TextStyle(
@@ -125,45 +121,41 @@ class _SaveState extends State<Save> with SingleTickerProviderStateMixin{
                       fontFamily: 'Degular',
                     ),
                   ),
-                ) : Container(
-                  child: ListView.builder(
-                      itemCount: singlecolorlist.length,
-                      padding: EdgeInsets.all(0),
-                      itemBuilder: (ctx, index) {
-                        return Container(
-                          padding: EdgeInsets.only(top: 20),
-                          color: Color(0xFF000000 + int.parse(singlecolorlist[index], radix: 16)),
-                          height: 100,
-                          child: ListTile(
-                            title: Container(
-                              child: Text(
-                                '#${singlecolorlist[index].toUpperCase()}',
-                                style: const TextStyle(
-                                  fontFamily: 'Degular',
-                                  fontSize: 24,
-                                  fontWeight: FontWeight.w900,
-                                ),
-                              ),
-                            ),
-                            trailing: IconButton(
-                              onPressed: () {
-                                delete(index);
-                              },
-                              icon: Icon(
-                                Icons.delete_outline,
-                                color: Colors.black87,
-                                size: 30,
-                              ),
+                ) : ListView.builder(
+                    itemCount: singlecolorlist.length,
+                    padding: const EdgeInsets.all(0),
+                    itemBuilder: (ctx, index) {
+                      return Container(
+                        padding: const EdgeInsets.only(top: 20),
+                        color: Color(0xFF000000 + int.parse(singlecolorlist[index], radix: 16)),
+                        height: 100,
+                        child: ListTile(
+                          title: Text(
+                            '#${singlecolorlist[index].toUpperCase()}',
+                            style: const TextStyle(
+                              fontFamily: 'Degular',
+                              fontSize: 24,
+                              fontWeight: FontWeight.w900,
                             ),
                           ),
-                        );
-                      }),
-                ),
-                _isLoading1 ? Center(
+                          trailing: IconButton(
+                            onPressed: () {
+                              delete(index);
+                            },
+                            icon: const Icon(
+                              Icons.delete_outline,
+                              color: Colors.black87,
+                              size: 30,
+                            ),
+                          ),
+                        ),
+                      );
+                    }),
+                _isLoading1 ? const Center(
                   child: CircularProgressIndicator(
                     color: Colors.grey,
                   ),
-                ) : colorpalletlist.isEmpty ? Center(
+                ) : colorpalletlist.isEmpty ? const Center(
                   child: Text(
                     'You have not saved any color pallet yet.',
                     style: TextStyle(
@@ -171,60 +163,58 @@ class _SaveState extends State<Save> with SingleTickerProviderStateMixin{
                       fontFamily: 'Degular',
                     ),
                   ),
-                ) : Container(
-                  child: ListView.builder(
-                    itemCount: colorpalletlist.length,
-                    padding: EdgeInsets.only(top: 0),
-                    itemBuilder: (ctx, index) {
-                      return Column(
-                        children: [
-                          Container(
-                            width: MediaQuery.of(context).size.width,
-                            height: 300,
-                            child: ListTile(
-                              title: ListView.builder(
-                                itemCount: colorpalletlist[index].length,
-                                padding: EdgeInsets.only(top: 15, bottom: 15),
-                                scrollDirection: Axis.horizontal,
-                                itemBuilder: (ctx, i) {
-                                  return Container(
-                                    width: (MediaQuery.of(context).size.width - 32) / colorpalletlist[index].length,
-                                    color: Color(0xFF000000 + int.parse(colorpalletlist[index][i], radix: 16)),
-                                    padding: EdgeInsets.only(left: (MediaQuery.of(context).size.width / colorpalletlist[index].length - 4) / 2 - 20, bottom: 85),
-                                    child: RotatedBox(
-                                      quarterTurns: 3, // Rotate text 270 degrees clockwise (vertical)
-                                      child: Text(
-                                        '#${colorpalletlist[index][i].toUpperCase()}',
-                                        style: TextStyle(
-                                            color: Colors.white,
-                                            fontFamily: 'Degular',
-                                            fontSize: 24
-                                        ),
+                ) : ListView.builder(
+                  itemCount: colorpalletlist.length,
+                  padding: const EdgeInsets.only(top: 0),
+                  itemBuilder: (ctx, index) {
+                    return Column(
+                      children: [
+                        SizedBox(
+                          width: MediaQuery.of(context).size.width,
+                          height: 300,
+                          child: ListTile(
+                            title: ListView.builder(
+                              itemCount: colorpalletlist[index].length,
+                              padding: const EdgeInsets.only(top: 15, bottom: 15),
+                              scrollDirection: Axis.horizontal,
+                              itemBuilder: (ctx, i) {
+                                return Container(
+                                  width: (MediaQuery.of(context).size.width - 32) / colorpalletlist[index].length,
+                                  color: Color(0xFF000000 + int.parse(colorpalletlist[index][i], radix: 16)),
+                                  padding: EdgeInsets.only(left: (MediaQuery.of(context).size.width / colorpalletlist[index].length - 4) / 2 - 20, bottom: 85),
+                                  child: RotatedBox(
+                                    quarterTurns: 3, // Rotate text 270 degrees clockwise (vertical)
+                                    child: Text(
+                                      '#${colorpalletlist[index][i].toUpperCase()}',
+                                      style: const TextStyle(
+                                          color: Colors.white,
+                                          fontFamily: 'Degular',
+                                          fontSize: 24
                                       ),
                                     ),
-                                  );
-                                },
-                              ),
+                                  ),
+                                );
+                              },
                             ),
                           ),
-                          Row(
-                            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                            children: [
-                              IconButton(
-                                onPressed: () {
-                                  delete1(index);
-                                },
-                                icon: Icon(
-                                  Icons.delete_outline,
-                                  size: 30,
-                                ),
+                        ),
+                        Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                          children: [
+                            IconButton(
+                              onPressed: () {
+                                delete1(index);
+                              },
+                              icon: const Icon(
+                                Icons.delete_outline,
+                                size: 30,
                               ),
-                            ],
-                          )
-                        ],
-                      );
-                    },
-                  ),
+                            ),
+                          ],
+                        )
+                      ],
+                    );
+                  },
                 ),
               ],
             ),

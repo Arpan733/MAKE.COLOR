@@ -1,10 +1,11 @@
+// ignore_for_file: unrelated_type_equality_checks
+
 import 'package:flutter/material.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:hive/hive.dart';
 import 'dart:math';
 
 class Generate extends StatefulWidget {
-
   Generate({Key? key}) : super(key: key);
 
   @override
@@ -16,50 +17,79 @@ class _GenerateState extends State<Generate> {
   Map<Color, List<int>> _hexlist = {};
 
   void makelist(int n) {
-    for(var i=0; i < n; i++){
-      if(_hexlist.length < _total) {
+    for (var i = 0; i < n; i++) {
+      if (_hexlist.length < _total) {
         _hexlist[random()] = [i, 0];
       }
     }
   }
 
-  void add(int i) {
-    if(i == _hexlist.length - 1) {
-      _hexlist[random()] = [i + 1, 0];
-    } else {
-      Map<Color, List<int>> updatedhexlist = {};
-      int c = 0;
-      i++;
+  void makelist1(int n) {
+    Map<Color, List<int>> updatedhexlist = {};
 
-      _hexlist.forEach((key, value) {
-        if(key == _hexlist.keys.elementAt(i)){
-          updatedhexlist[random()] = [value[0], 0];
-          c = 1;
-        }
-
-        if(c == 0){
-          updatedhexlist[key] = value;
-        } else {
-          updatedhexlist[key] = [value[0] + 1, value[1]];
-        }
-      });
-
-      _hexlist = updatedhexlist;
+    for(var i = 0; i < n; i++) {
+      if(_hexlist[_hexlist.keys.elementAt(i)]?[1] == 0){
+        updatedhexlist[random()] = [i, 0];
+      } else {
+        updatedhexlist[_hexlist.keys.elementAt(i)] = [i, 1];
+      }
     }
 
-    _total++;
+    _hexlist = updatedhexlist;
+  }
+
+  void add(int i) {
+    if (_total >= 7) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(
+          content: Text(
+            'You can add up to 7 colors per pallete.',
+            style: TextStyle(
+              fontFamily: 'Degular',
+              fontSize: 18,
+            ),
+          ),
+        ),
+      );
+    } else {
+      print("hello");
+      if (i == _hexlist.length - 1) {
+        _hexlist[random()] = [i + 1, 0];
+      } else {
+        Map<Color, List<int>> updatedhexlist = {};
+        int c = 0;
+        i++;
+
+        _hexlist.forEach((key, value) {
+          if (key == _hexlist.keys.elementAt(i)) {
+            updatedhexlist[random()] = [value[0], 0];
+            c = 1;
+          }
+
+          if (c == 0) {
+            updatedhexlist[key] = value;
+          } else {
+            updatedhexlist[key] = [value[0] + 1, value[1]];
+          }
+        });
+
+        _hexlist = updatedhexlist;
+      }
+
+      _total++;
+    }
   }
 
   void remove(int i) {
-    setState(() {
+    if (_total > 4) {
       Map<Color, List<int>> updatedhexlist = {};
       int j = 0;
       _hexlist.forEach((key, value) {
-        if(i > j) {
+        if (i > j) {
           updatedhexlist[key] = value;
         }
 
-        if(i < j) {
+        if (i < j) {
           updatedhexlist[key] = [value[0] - 1, value[1]];
         }
 
@@ -68,7 +98,20 @@ class _GenerateState extends State<Generate> {
 
       _hexlist = updatedhexlist;
       _total--;
-    });
+    } else {
+      print(1);
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(
+          content: Text(
+            'Not be less than 4 colors per pallete.',
+            style: TextStyle(
+              fontFamily: 'Degular',
+              fontSize: 18,
+            ),
+          ),
+        ),
+      );
+    }
   }
 
   Color random() {
@@ -116,22 +159,34 @@ class _GenerateState extends State<Generate> {
                   height: 570 / _hexlist.length,
                   child: ListTile(
                     leading: Container(
-                      padding: EdgeInsets.only(top: 570 / (_hexlist.length * 2) - 24),
+                      padding: EdgeInsets.only(
+                          top: 570 / (_hexlist.length * 2) - 24),
                       child: IconButton(
-                        onPressed: () {
-                          _hexlist[index]?[1] = -1 * _hexlist[index]![1];
-                          print(_hexlist[index]?[1]);
-                        },
-                        icon: Icon(
-                          _hexlist[index]?[1] == 0 ? Icons.lock_rounded : Icons.lock_open_rounded,
-                          color: Colors.black87,
-                        )
+                          onPressed: () {
+                            print(_hexlist[_hexlist.keys.elementAt(index)]);
+
+                            setState(() {
+                              var a = _hexlist[_hexlist.keys.elementAt(index)]?[1];
+                              a == 0? a = 1: a = 0;
+                              _hexlist[_hexlist.keys.elementAt(index)]?[1] = a;
+                            });
+
+                            print(_hexlist[_hexlist.keys.elementAt(index)]);
+                          },
+                          icon: Icon(
+                            _hexlist[_hexlist.keys.elementAt(index)]?[1] == 1
+                                ? Icons.lock_outline_rounded
+                                : Icons.lock_open_rounded,
+                            color: Colors.black87,
+                          )
                       ),
                     ),
                     title: Container(
-                      padding: EdgeInsets.only(top: 570 / (_hexlist.length * 2) - 24),
+                      padding: EdgeInsets.only(
+                          top: 570 / (_hexlist.length * 2) - 24),
                       child: Text(
-                        '#${_hexlist.keys.elementAt(index).toString().substring(10, 16)}'.toUpperCase(),
+                        '#${_hexlist.keys.elementAt(index).toString().substring(10, 16)}'
+                            .toUpperCase(),
                         style: const TextStyle(
                           fontFamily: 'Degular',
                           fontSize: 24,
@@ -141,57 +196,30 @@ class _GenerateState extends State<Generate> {
                     ),
                     trailing: Container(
                       width: 100,
-                      padding: EdgeInsets.only(top: 570 / (_hexlist.length * 2) - 24),
+                      padding: EdgeInsets.only(
+                          top: 570 / (_hexlist.length * 2) - 24),
                       child: Row(
                         children: [
                           IconButton(
                               onPressed: () {
-                                if(_total >= 7) {
-                                  ScaffoldMessenger.of(context).showSnackBar(
-                                    SnackBar(
-                                      content: Text(
-                                        'You can add up to 7 colors per pallete.',
-                                        style: TextStyle(
-                                          fontFamily: 'Degular',
-                                          fontSize: 18,
-                                        ),
-                                      ),
-                                    ),
-                                  );
-                                } else {
-                                  setState(() {
-                                    add(index);
-                                  });
-                                }
+                                setState(() {
+                                  add(index);
+                                });
                               },
-                              icon: Icon(
+                              icon: const Icon(
                                 Icons.add,
                                 color: Colors.black87,
-                              )
-                          ),
+                              )),
                           IconButton(
                               onPressed: () {
-                                if(_total > 4) {
+                                setState(() {
                                   remove(index);
-                                } else {
-                                  ScaffoldMessenger.of(context).showSnackBar(
-                                    SnackBar(
-                                      content: Text(
-                                        'Not be less than 4 colors per pallete.',
-                                        style: TextStyle(
-                                          fontFamily: 'Degular',
-                                          fontSize: 18,
-                                        ),
-                                      ),
-                                    ),
-                                  );
-                                }
+                                });
                               },
-                              icon: Icon(
+                              icon: const Icon(
                                 Icons.remove,
                                 color: Colors.black87,
-                              )
-                          ),
+                              )),
                         ],
                       ),
                     ),
@@ -200,7 +228,7 @@ class _GenerateState extends State<Generate> {
               },
             ),
           ),
-          SizedBox(
+          const SizedBox(
             height: 10,
           ),
           Row(
@@ -215,9 +243,10 @@ class _GenerateState extends State<Generate> {
 
                   var box = await Hive.openBox('ColorPallet');
                   List<dynamic> dynamiclist = await box.get('ColorPalletList');
-                  List<List<String>> colorpalletlist = dynamiclist.cast<List<String>>();
+                  List<List<String>> colorpalletlist =
+                      dynamiclist.cast<List<String>>();
 
-                  if(colorpalletlist == null || colorpalletlist.isEmpty) {
+                  if (colorpalletlist == null || colorpalletlist.isEmpty) {
                     colorpalletlist = [p];
                   } else {
                     colorpalletlist.add(p);
@@ -251,8 +280,7 @@ class _GenerateState extends State<Generate> {
               ElevatedButton(
                 onPressed: () {
                   setState(() {
-                    _hexlist.clear();
-                    makelist(7);
+                    makelist1(_total);
                   });
                 },
                 style: ElevatedButton.styleFrom(

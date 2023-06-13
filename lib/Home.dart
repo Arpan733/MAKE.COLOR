@@ -1,4 +1,4 @@
-// ignore_for_file: must_be_immutable
+// ignore_for_file: file_names
 
 import 'package:flutter/material.dart';
 import 'package:path_provider/path_provider.dart';
@@ -6,17 +6,17 @@ import 'package:hive/hive.dart';
 import 'dart:math';
 
 class Home extends StatefulWidget {
-  Home({Key? key}) : super(key: key);
+  const Home({Key? key}) : super(key: key);
 
   @override
   State<Home> createState() => _HomeState();
 }
 
 class _HomeState extends State<Home> {
-  TextEditingController _hexcontroller = TextEditingController();
-  TextEditingController _rcontroller = TextEditingController(text: Random().nextInt(256).toString());
-  TextEditingController _gcontroller = TextEditingController(text: Random().nextInt(256).toString());
-  TextEditingController _bcontroller = TextEditingController(text: Random().nextInt(256).toString());
+  final TextEditingController _hexcontroller = TextEditingController();
+  final TextEditingController _rcontroller = TextEditingController(text: Random().nextInt(256).toString());
+  final TextEditingController _gcontroller = TextEditingController(text: Random().nextInt(256).toString());
+  final TextEditingController _bcontroller = TextEditingController(text: Random().nextInt(256).toString());
   Color _ic = Color.fromRGBO(Random().nextInt(256), Random().nextInt(256), Random().nextInt(256), 1);
 
   void hextorgb(String hex) {
