@@ -50,7 +50,7 @@ class _HomePageState extends State<HomePage> {
             _ci = i;
           });
         },
-        backgroundColor: _ci == 1 ? Colors.greenAccent : Colors.grey,
+        backgroundColor: _ci == 1 ? Colors.grey : Colors.grey,
         selectedItemColor: Colors.white,
         selectedIconTheme: const IconThemeData(
           size: 32

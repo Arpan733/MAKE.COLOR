@@ -71,7 +71,7 @@ class _HomeState extends State<Home> {
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           Container(
-            margin: const EdgeInsets.only(top: 25),
+            margin: const EdgeInsets.only(top: 25, left: 5),
             child: const Text(
               'MAKE.COLOR',
               style: TextStyle(
