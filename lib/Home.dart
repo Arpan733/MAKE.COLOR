@@ -20,12 +20,14 @@ class _HomeState extends State<Home> {
   Color _ic = Color.fromRGBO(Random().nextInt(256), Random().nextInt(256), Random().nextInt(256), 1);
 
   void hextorgb(String hex) {
+    print(1);
     _rcontroller.text = int.parse(hex.substring(0, 2), radix: 16).toString();
     _gcontroller.text = int.parse(hex.substring(2, 4), radix: 16).toString();
     _bcontroller.text = int.parse(hex.substring(4, 6), radix: 16).toString();
   }
 
   void rgbtohex(String r, String g, String b) {
+    print(2);
     int red = int.parse(r);
     int green = int.parse(g);
     int blue = int.parse(b);
@@ -53,12 +55,14 @@ class _HomeState extends State<Home> {
   }
 
   @override
-  Widget build(BuildContext context) {
-    _ic = Color.fromRGBO(int.parse(_rcontroller.text), int.parse(_gcontroller.text), int.parse(_bcontroller.text), 1);
-    rgbtohex(_rcontroller.text, _gcontroller.text, _bcontroller.text);
-
+  void initState() {
+    super.initState();
     start();
+    rgbtohex(_rcontroller.text, _gcontroller.text, _bcontroller.text);
+  }
 
+  @override
+  Widget build(BuildContext context) {
     return Container(
       height: MediaQuery.of(context).size.height - 74,
       width: MediaQuery.of(context).size.width,
@@ -137,7 +141,9 @@ class _HomeState extends State<Home> {
                         color: Colors.black87,
                       ),
                       onChanged: (value) {
-                        _hexcontroller.selection = TextSelection.collapsed(offset: _hexcontroller.text.length);
+                        if (_hexcontroller.text.length > 6){
+                          _hexcontroller.text = _hexcontroller.text.substring(0, 6);
+                        }
 
                         if(value.isNotEmpty) {
                           if(value.length == 6){
@@ -171,6 +177,8 @@ class _HomeState extends State<Home> {
                             }
                           }
                         }
+
+                        _hexcontroller.selection = TextSelection.collapsed(offset: _hexcontroller.text.length);
                       },
                     ),
                     const SizedBox(
@@ -227,6 +235,11 @@ class _HomeState extends State<Home> {
                               ),
                               onChanged: (value) {
                                 setState(() {
+                                  if (int.parse(_rcontroller.text) > 256) {
+                                    _rcontroller.text = _rcontroller.text.substring(0, _rcontroller.text.length - 1);
+                                    _rcontroller.selection = TextSelection.collapsed(offset: _rcontroller.text.length);
+                                  }
+
                                   _ic = Color.fromRGBO(int.parse(value), int.parse(_gcontroller.text), int.parse(_bcontroller.text), 1);
                                   rgbtohex(value, _gcontroller.text, _bcontroller.text);
                                 });
@@ -275,6 +288,11 @@ class _HomeState extends State<Home> {
                               ),
                               onChanged: (value) {
                                 setState(() {
+                                  if (int.parse(_rcontroller.text) > 256) {
+                                    _rcontroller.text = _rcontroller.text.substring(0, _rcontroller.text.length - 1);
+                                    _rcontroller.selection = TextSelection.collapsed(offset: _rcontroller.text.length);
+                                  }
+
                                   _ic = Color.fromRGBO(int.parse(_rcontroller.text), int.parse(value), int.parse(_bcontroller.text), 1);
                                   rgbtohex(_rcontroller.text, value, _bcontroller.text);
                                 });
@@ -323,6 +341,11 @@ class _HomeState extends State<Home> {
                               ),
                               onChanged: (value) {
                                 setState(() {
+                                  if (int.parse(_rcontroller.text) > 256) {
+                                    _rcontroller.text = _rcontroller.text.substring(0, _rcontroller.text.length - 1);
+                                    _rcontroller.selection = TextSelection.collapsed(offset: _rcontroller.text.length);
+                                  }
+
                                   _ic = Color.fromRGBO(int.parse(_rcontroller.text), int.parse(_gcontroller.text), int.parse(value), 1);
                                   rgbtohex(_rcontroller.text, _gcontroller.text, value);
                                 });

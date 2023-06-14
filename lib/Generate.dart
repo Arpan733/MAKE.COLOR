@@ -52,7 +52,6 @@ class _GenerateState extends State<Generate> {
         ),
       );
     } else {
-      print("hello");
       if (i == _hexlist.length - 1) {
         _hexlist[random()] = [i + 1, 0];
       } else {
@@ -81,7 +80,19 @@ class _GenerateState extends State<Generate> {
   }
 
   void remove(int i) {
-    if (_total > 4) {
+    if (_total < 5) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(
+          content: Text(
+            'Not be less than 5 colors per pallet.',
+            style: TextStyle(
+              fontFamily: 'Degular',
+              fontSize: 18,
+            ),
+          ),
+        ),
+      );
+    } else {
       Map<Color, List<int>> updatedhexlist = {};
       int j = 0;
       _hexlist.forEach((key, value) {
@@ -98,19 +109,6 @@ class _GenerateState extends State<Generate> {
 
       _hexlist = updatedhexlist;
       _total--;
-    } else {
-      print(1);
-      ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(
-          content: Text(
-            'Not be less than 4 colors per pallete.',
-            style: TextStyle(
-              fontFamily: 'Degular',
-              fontSize: 18,
-            ),
-          ),
-        ),
-      );
     }
   }
 
