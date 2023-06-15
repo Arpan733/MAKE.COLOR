@@ -80,19 +80,7 @@ class _GenerateState extends State<Generate> {
   }
 
   void remove(int i) {
-    if (_total < 5) {
-      ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(
-          content: Text(
-            'Not be less than 5 colors per pallet.',
-            style: TextStyle(
-              fontFamily: 'Degular',
-              fontSize: 18,
-            ),
-          ),
-        ),
-      );
-    } else {
+    if (_total > 5) {
       Map<Color, List<int>> updatedhexlist = {};
       int j = 0;
       _hexlist.forEach((key, value) {
@@ -109,6 +97,18 @@ class _GenerateState extends State<Generate> {
 
       _hexlist = updatedhexlist;
       _total--;
+    } else {
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(
+          content: Text(
+            'Not be less than 5 colors per pallet.',
+            style: TextStyle(
+              fontFamily: 'Degular',
+              fontSize: 18,
+            ),
+          ),
+        ),
+      );
     }
   }
 
@@ -148,7 +148,7 @@ class _GenerateState extends State<Generate> {
       child: Column(
         children: [
           Container(
-            height: MediaQuery.of(context).size.height - 150,
+            height: MediaQuery.of(context).size.height * 0.80,
             child: ListView.builder(
               itemCount: _hexlist.length,
               itemBuilder: (ctx, index) {
@@ -239,15 +239,38 @@ class _GenerateState extends State<Generate> {
                     p.add(key.toString().substring(10, 16));
                   });
 
-                  var box = await Hive.openBox('ColorPallet');
-                  List<dynamic> dynamiclist = await box.get('ColorPalletList');
-                  List<List<String>> colorpalletlist =
-                      dynamiclist.cast<List<String>>();
+                  var box = await Hive.openBox('Color-Pallet');
+                  List<dynamic>? dynamiclist = await box.get('ColorPalletList');
+                  List<List<String>> colorpalletlist = dynamiclist != null
+                      ? dynamiclist.cast<List<String>>()
+                      : [];
 
-                  if (colorpalletlist == null || colorpalletlist.isEmpty) {
+                  if (colorpalletlist.isEmpty) {
                     colorpalletlist = [p];
                   } else {
-                    colorpalletlist.add(p);
+                    int i = 0;
+
+                    for (var element in colorpalletlist) {
+                      if (element.toString() == p.toString()) {
+                        i = 1;
+
+                        ScaffoldMessenger.of(context).showSnackBar(
+                          const SnackBar(
+                            content: Text(
+                              'This color pallet is already saved.',
+                              style: TextStyle(
+                                fontFamily: 'Degular',
+                                fontSize: 18,
+                              ),
+                            ),
+                          ),
+                        );
+                      }
+                    }
+
+                    if (i == 0) {
+                      colorpalletlist.add(p);
+                    }
                   }
 
                   print(p);

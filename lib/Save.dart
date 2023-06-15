@@ -34,7 +34,7 @@ class _SaveState extends State<Save> with SingleTickerProviderStateMixin{
   }
 
   Future<void> pri1() async {
-    var box = await Hive.openBox('ColorPallet');
+    var box = await Hive.openBox('Color-Pallet');
     List<dynamic> dynamiclist = await box.get('ColorPalletList');
     List<List<String>> list = dynamiclist.cast<List<String>>();
 
@@ -52,7 +52,7 @@ class _SaveState extends State<Save> with SingleTickerProviderStateMixin{
   }
 
   void delete1(int i) async {
-    var box = await Hive.openBox('ColorPallet');
+    var box = await Hive.openBox('Color-Pallet');
     colorpalletlist.removeAt(i);
     box.put('ColorPalletList', colorpalletlist);
     setState(() {});
@@ -79,8 +79,8 @@ class _SaveState extends State<Save> with SingleTickerProviderStateMixin{
     print(colorpalletlist);
 
     return Container(
-      margin: const EdgeInsets.only(top: 25),
-      height: MediaQuery.of(context).size.height - 97,
+      margin: EdgeInsets.only(top: MediaQuery.of(context).size.height * 0.034),
+      height: MediaQuery.of(context).size.height - 74,
       color: Colors.grey,
       child: Column(
         children: [

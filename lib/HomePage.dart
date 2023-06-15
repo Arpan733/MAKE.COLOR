@@ -26,22 +26,22 @@ class _HomePageState extends State<HomePage> {
       bottomNavigationBar: BottomNavigationBar(
         items: const [
           BottomNavigationBarItem(
-            icon: Icon(
-              Icons.change_circle_sharp,
-            ),
-            label: 'Generate'
+              icon: Icon(
+                Icons.change_circle_sharp,
+              ),
+              label: 'Generate'
           ),
           BottomNavigationBarItem(
-             icon: Icon(
-              Icons.home_filled
-            ),
-            label: 'Home'
+              icon: Icon(
+                  Icons.home_filled
+              ),
+              label: 'Home'
           ),
           BottomNavigationBarItem(
-             icon: Icon(
-              Icons.save
-            ),
-            label: 'Save'
+              icon: Icon(
+                  Icons.save
+              ),
+              label: 'Save'
           ),
         ],
         currentIndex: _ci,
@@ -53,7 +53,7 @@ class _HomePageState extends State<HomePage> {
         backgroundColor: _ci == 1 ? Colors.grey : Colors.grey,
         selectedItemColor: Colors.white,
         selectedIconTheme: const IconThemeData(
-          size: 32
+            size: 32
         ),
         selectedLabelStyle: const TextStyle(
           fontSize: 18,
@@ -61,7 +61,7 @@ class _HomePageState extends State<HomePage> {
         ),
         unselectedItemColor: Colors.black54,
         unselectedIconTheme: const IconThemeData(
-          size: 28
+            size: 28
         ),
         unselectedLabelStyle: const TextStyle(
           fontSize: 14,
